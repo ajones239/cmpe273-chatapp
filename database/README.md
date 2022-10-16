@@ -10,3 +10,8 @@ Running `setupdb.sh` will
     * 3 config servers
     * 3 shards, each with 3 replicants
 - create default user 
+
+### Dependencies
+- python3, including venv and pip modules
+- mongodb
+- mtools (automatically installed in virtual environment)
