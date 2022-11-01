@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fiber/dbconnect"
 	"fiber/routes"
 
 	"github.com/gofiber/fiber/v2"
@@ -8,6 +9,9 @@ import (
 )
 
 func main() {
+
+	dbconnect.Connect()
+
 	app := fiber.New()
 
 	//used as middleware b/w two different ports
