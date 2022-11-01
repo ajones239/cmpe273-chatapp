@@ -5,29 +5,61 @@ import (
 	"fmt"
 	"log"
 
+	"fiber/models"
+
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+// client is exportted MongoDB client
+var Client *mongo.Client
+var Collection *mongo.Collection
+
+var ctx = context.TODO()
+
+// connect to MongoDB using func Connect
 func Connect() {
 
 	// Set client options
 	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
 
 	// Connect to MongoDB
-	client, err := mongo.Connect(context.TODO(), clientOptions)
-
+	client, err := mongo.Connect(ctx, clientOptions)
+	Client = client
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Check the connection
-	err = client.Ping(context.TODO(), nil)
+	err = Client.Ping(ctx, nil)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	fmt.Println("Connected to MongoDB!")
-	//need to migrate user info to DB from models user.go file
+
+	userDB := Client.Database("Go_Auth")
+	userCollection := userDB.Collection("Login")
+	Collection = userCollection
+	//trying to migrate user data to mongoDB here
+	userResult, err := Collection.InsertOne(context.TODO(), &models.User{})
+
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("created user: ", userResult.InsertedID)
+
+	err = Client.Disconnect(context.TODO())
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("Connection to DB closed.")
+
+	if err != nil {
+		log.Fatal(err)
+	}
 }

@@ -1,13 +1,17 @@
 package controllers
 
 import (
+	"context"
+	"fiber/dbconnect"
 	"fiber/models"
-	"time"
 
-	"strconv"
+	//"time"
+
+	//"strconv"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v4"
+	//"github.com/golang-jwt/jwt/v4"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -31,11 +35,16 @@ func Register(c *fiber.Ctx) error {
 		Password: password,
 	}
 
+	//let's see if user gets inserted into DB
+	//failed to update dunno why
+	dbconnect.Collection.InsertOne(context.TODO(), &user)
+
 	//return c.SendString("Hello, World!")
 	//return the user info using Postman to verify results
 	return c.JSON(user)
 }
 
+/*
 func Login(c *fiber.Ctx) error {
 	//array of type string
 	var data map[string]string
@@ -119,11 +128,12 @@ func User(c *fiber.Ctx) error {
 
 	claims := token.Claims.(*jwt.StandardClaims)
 
-	//var user models.User
+	var user models.User
 
-	//database.DB.Where("id = ?", claims.Issuer).First(&user)
-	//return c.JSON(user)
-	return c.JSON(claims)
+	dbconnect.DB.Where("id = ?", claims.Issuer).First(&user)
+
+	return c.JSON(user)
+	//return c.JSON(claims)
 }
 
 func Logout(c *fiber.Ctx) error {
@@ -141,4 +151,6 @@ func Logout(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"message": "logged out, success",
 	})
+
 }
+*/
