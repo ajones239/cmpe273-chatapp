@@ -4,12 +4,15 @@ import (
 	"context"
 	"fiber/dbconnect"
 	"fiber/models"
+	"fmt"
 
 	//"time"
 
 	//"strconv"
 
 	"github.com/gofiber/fiber/v2"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+
 	//"github.com/golang-jwt/jwt/v4"
 
 	"golang.org/x/crypto/bcrypt"
@@ -29,7 +32,7 @@ func Register(c *fiber.Ctx) error {
 	//using Golang library bcrypt to generate hashed password
 	password, _ := bcrypt.GenerateFromPassword([]byte(data["password"]), 14)
 	user := models.User{
-
+		Id:       primitive.NewObjectID(),
 		Name:     data["name"],
 		Email:    data["email"],
 		Password: password,
@@ -37,8 +40,12 @@ func Register(c *fiber.Ctx) error {
 
 	//let's see if user gets inserted into DB
 	//failed to update dunno why
-	dbconnect.Collection.InsertOne(context.TODO(), &user)
+	createUser, err := dbconnect.Collection.InsertOne(context.TODO(), &user)
+	if err != nil {
+		panic(err)
+	}
 
+	fmt.Println("created user: ", createUser.InsertedID)
 	//return c.SendString("Hello, World!")
 	//return the user info using Postman to verify results
 	return c.JSON(user)

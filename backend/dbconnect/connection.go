@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"log"
 
-	"fiber/models"
-
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -43,7 +41,7 @@ func Connect() {
 	userCollection := userDB.Collection("Login")
 	Collection = userCollection
 	//trying to migrate user data to mongoDB here
-	userResult, err := Collection.InsertOne(context.TODO(), &models.User{})
+	/*userResult, err := Collection.InsertOne(context.TODO(), &models.User{})
 
 	if err != nil {
 		panic(err)
@@ -51,15 +49,16 @@ func Connect() {
 
 	fmt.Println("created user: ", userResult.InsertedID)
 
-	err = Client.Disconnect(context.TODO())
+		err = Client.Disconnect(context.TODO())
 
-	if err != nil {
-		log.Fatal(err)
-	}
+		if err != nil {
+			log.Fatal(err)
+		}
 
-	fmt.Println("Connection to DB closed.")
+		fmt.Println("Connection to DB closed.")
 
-	if err != nil {
-		log.Fatal(err)
-	}
+		if err != nil {
+			log.Fatal(err)
+		}
+	*/
 }
