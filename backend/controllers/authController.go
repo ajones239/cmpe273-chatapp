@@ -5,12 +5,15 @@ import (
 	"fiber/dbconnect"
 	"fiber/models"
 	"fmt"
+	"time"
 
 	//"time"
 
 	//"strconv"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	//"github.com/golang-jwt/jwt/v4"
@@ -51,7 +54,6 @@ func Register(c *fiber.Ctx) error {
 	return c.JSON(user)
 }
 
-/*
 func Login(c *fiber.Ctx) error {
 	//array of type string
 	var data map[string]string
@@ -61,11 +63,12 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	var user models.User
-	//get email from DB and assign to first user var
 
+	//get email from DB and set to first var in user
+	err := dbconnect.Collection.FindOne(context.TODO(), bson.M{"email": data["email"]}).Decode(&user)
 	//see if email is found
-	if user.Id == 0 {
-		c.Status(fiber.StatusNotFound)
+	if err != nil {
+		c.Status(fiber.StatusBadRequest)
 		return c.JSON(fiber.Map{
 			"message": "User not found",
 		})
@@ -81,21 +84,23 @@ func Login(c *fiber.Ctx) error {
 
 	//Create jwt token for each user based on user ID
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
+
 		//convert user ID to a str since issuer only accepts str
-		Issuer:    strconv.Itoa(int(user.Id)),
+		Issuer:    user.Id.Hex(),
 		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), //1 day limit
 	})
 	//create token key
 	token, err := claims.SignedString([]byte(SecretKey))
 
 	if err != nil {
-		c.Status(fiber.StatusBadRequest)
+		c.Status(fiber.StatusInternalServerError)
 		return c.JSON(fiber.Map{
 			"message": "Sorry, could not login",
 		})
 	}
+
 	//send jwt token via cookie stored in frontend,
-	//b/c frontend doesn't need to access this set HTTPonly
+	//but frontend doesn't need to access this set HTTPonly
 	cookie := fiber.Cookie{
 		Name:     "jwt",
 		Value:    token,
@@ -136,11 +141,12 @@ func User(c *fiber.Ctx) error {
 	claims := token.Claims.(*jwt.StandardClaims)
 
 	var user models.User
+	filter := bson.M{"_id": bson.M{"$eq": claims.Issuer}}
+	dbconnect.Collection.FindOne(context.TODO(), filter).Decode(&user)
 
-	dbconnect.DB.Where("id = ?", claims.Issuer).First(&user)
-
-	return c.JSON(user)
-	//return c.JSON(claims)
+	//fmt.Println(user)
+	//return c.JSON(user)
+	return c.JSON(claims)
 }
 
 func Logout(c *fiber.Ctx) error {
@@ -160,4 +166,3 @@ func Logout(c *fiber.Ctx) error {
 	})
 
 }
-*/
