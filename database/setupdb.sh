@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ -d $(which python3) ]; then
     echo Cannot find python3
@@ -10,12 +10,12 @@ fi
 if ! [ -d venv ]; then
     echo "venv not found, creating virtual env..."
     python3 -m venv venv
-    source ./venv/bin/activate
+    . ./venv/bin/activate
     echo "installing requirements..."
     python3 -m pip install -r requirements.txt
 else
     echo "venv found, activating..."
-    source ./venv/bin/activate
+    . ./venv/bin/activate
 fi
 
 if [[ $(netstat -tl | grep 27017) ]]; then
