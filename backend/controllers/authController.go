@@ -145,8 +145,8 @@ func User(c *fiber.Ctx) error {
 	dbconnect.Collection.FindOne(context.TODO(), filter).Decode(&user)
 
 	//fmt.Println(user)
-	//return c.JSON(user)
-	return c.JSON(claims)
+	return c.JSON(user)
+	//return c.JSON(claims)
 }
 
 func Logout(c *fiber.Ctx) error {

@@ -4,6 +4,8 @@ import Login from "./pages/Login";
 import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
+import Chat from "./pages/Chat";
+
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -12,7 +14,7 @@ function App() {
 
   const [name, setName] = useState('');
 
-    //get user name after login
+    /*get user name after login
     useEffect( () => {
         (
             async () => {
@@ -29,17 +31,18 @@ function App() {
             }
         )();
     });
-
+*/
     //note that this is using react-router-dom v6
   return (
     
       <Router>
         <div>
-          <Nav name={name} setName={setName}/>
+          <Nav/>
           <Routes>
-              <Route path="/" element={<Home name={name}/>} />
+              <Route path="/" element={<Home />} />
               <Route path="register" element={<Register />} />
-              <Route path="login" element={<Login setName={setName}/>} />
+              <Route path="login" element={<Login />} />
+              <Route path="chat" element={<Chat />} />
           </Routes>
         </div>
       </Router>
