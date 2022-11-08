@@ -30,6 +30,7 @@ fi
 
 echo "launching mongodb cluster..."
 mlaunch \
+    --bind_ip 0.0.0.0 \
     --replicaset \
     --nodes 3 \
     --name replset \
