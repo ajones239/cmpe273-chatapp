@@ -20,6 +20,7 @@ func Connect() {
 
 	// Set client options
 	clientOptions := options.Client().ApplyURI("mongodb://107.175.28.141:27017")
+	//clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(ctx, clientOptions)
