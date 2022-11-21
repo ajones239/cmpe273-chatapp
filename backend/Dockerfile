@@ -6,6 +6,7 @@ WORKDIR /app
 
 ENV API_PORT "8000"
 
+RUN go mod tidy
 RUN go mod download
 RUN go build -o api ./
 
