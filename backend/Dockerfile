@@ -4,6 +4,8 @@ RUN mkdir /app
 ADD . /app
 WORKDIR /app
 
+ENV API_PORT "8000"
+
 RUN go mod download
 RUN go build -o api ./
 
