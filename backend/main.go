@@ -5,6 +5,7 @@ import (
 	"fiber/routes"
 	"fmt"
 	"log"
+    "os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -52,6 +53,12 @@ func hub() {
 }
 
 func main() {
+
+    port := os.Getenv("API_PORT")
+    if port == "" {
+        log.Println("Error: API_PORT environment variable not set")
+        return
+    }
 
 	dbconnect.Connect()
 	fmt.Println("Chatapp server")
@@ -104,5 +111,5 @@ func main() {
 
 	//user login server
 	routes.Setup(app)
-	app.Listen(":8000")
+	app.Listen(":" + port)
 }
