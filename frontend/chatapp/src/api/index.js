@@ -1,3 +1,5 @@
+import reportWebVitals from "../reportWebVitals";
+
 //connect to websocket endpoint
 var socket = new WebSocket("ws://localhost:8000/ws");
 
@@ -35,3 +37,6 @@ let sendMsg = msg => {
 };
 
 export { connect, sendMsg };
+
+//report web vitals testing
+reportWebVitals(console.log);

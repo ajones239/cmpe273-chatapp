@@ -1,6 +1,7 @@
 import React, {SyntheticEvent, useState} from "react";
 import {Navigate} from 'react-router-dom';
 
+
 const Register = () => { 
 
     //React states to get state and store in var
@@ -44,25 +45,60 @@ const Register = () => {
         return <Navigate to='/login'/>
     }
 
+    const Style = {
+    body:{
+        backgroundColor: 'Purple',
+        paddingTop: 250,
+        paddingBottom: 300,
+    },
+    h1: {color: 'Black',
+        lineHeight: 10,
+        paddingLeft: 850,
+    }, 
+    Input: {
+        display: "block",
+        justifyContent: "center",
+        alignItems: "center",
+        fontWeight: "bold",
+        paddingTop: 50,
+        paddingLeft: 700,
+        paddingRight: 700,
+
+      },
+    Button: {
+        paddingTop: 50,
+        paddingLeft: 800,
+        paddingRight: 800,
+        color: "black",
+    }
+}
+
+
     return(
-        
+        <div style={Style.body}>
         <form onSubmit={submit}>
-            <h1 className="h3 mb-3 fw-normal">Please Register</h1>
-            
+            <div style={Style.h1}>
+            <h1 className="text-lg-start">Please Register</h1>
+
+            </div>      
+            <div style={Style.Input}  >  
             <input className="form-control" placeholder="Name" required
                 onChange={e => setName(e.target.value)}
             />
-            
+            <ul></ul>
             <input type="email" className="form-control" placeholder="Email address" required
                 onChange={e => setEmail(e.target.value)}
             />
-        
+            <ul></ul>
             <input type="password" className="form-control" placeholder="Password" required
                 onChange={e => setPassword(e.target.value)}
             />
-        
-            <button className="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+            </div> 
+            <div style={Style.Button}>
+            <button className="w-100 btn btn-lg btn-dark" type="submit">Sign up</button>
+            </div>
         </form>
+        </div>
         
     );
 };
