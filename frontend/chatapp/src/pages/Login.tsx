@@ -1,7 +1,6 @@
 import React,{SyntheticEvent, useState} from "react";
-import {Link, Navigate} from 'react-router-dom';
 import { client } from "../api";
-
+import {Navigate} from 'react-router-dom';
 
 const Login = () =>{
 
@@ -28,36 +27,83 @@ const Login = () =>{
         setredir_url(true);
         console.log(content);
 
-        let iterator = fetch("http://localhost:8000/api/user", {
-            method: 'GET',
-            headers: {'Accept': 'application/json'},
-            credentials: 'include'
-        });
-        iterator.then(res => res.json())
-            .then(dat => {
-                console.log(dat);
-                client.Id = dat.Id;
-            });
+        if(content.message === "incorrect password"){
+            alert("Incorrect Password!")
+        }else if(content.message === "User not found"){
+            alert("Incorrect Email!")
+        }else{
+            //the order matters here redirect before set redir  
+            console.log(content); 
+            setredir_url(true);
+        }
+
+        client.Id = email;
+        // let iterator = fetch("http://localhost:8000/api/user", {
+        //     method: 'GET',
+        //     headers: {'Accept': 'application/json'},
+        //     credentials: 'include'
+        // });
+        // iterator.then(res => res.json())
+        //     .then(dat => {
+        //         console.log(dat);
+        //         client.Id = dat.id;
+        //     });
     }
+
 
     if(redir_url){
         return <Navigate to='/chat'/>
     }
 
-    return(
-        <form onSubmit={submit}>
-            <h1 className="h3 mb-3 fw-normal">Login </h1>
+    const Style = {
+        body:{
+            backgroundColor: 'Purple',
+            paddingTop: 250,
+            paddingBottom: 350,
+        },
+        h1: {color: 'Black',
+            lineHeight: 10,
+            paddingLeft: 850,
+        }, 
+        Input: {
+            display: "block",
+            justifyContent: "center",
+            alignItems: "center",
+            fontWeight: "bold",
+            paddingTop: 50,
+            paddingLeft: 700,
+            paddingRight: 700,
+    
+          },
+        Button: {
+            paddingTop: 50,
+            paddingLeft: 800,
+            paddingRight: 800,
+            color: "black",
+        }
+    }
 
-            <input type="email" className="form-control" placeholder="Email address" required
-                onChange = {e => setEmail(e.target.value)}
-            />
-        
-            <input type="password" className="form-control" placeholder="Password" required
-                onChange = {e => setPassword(e.target.value)}
-            />
-        
-            <button className="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+
+    return(
+        <div style={Style.body}>
+        <form onSubmit={submit}>
+            <div style={Style.h1}>
+                <h1 className="text-lg-start">Please Sign In</h1>
+            </div>
+            <div style={Style.Input}>
+                <input type="email" className="form-control" placeholder="Email address" required
+                    onChange = {e => setEmail(e.target.value)}
+                />
+                <ul></ul>
+                <input type="password" className="form-control" placeholder="Password" required
+                    onChange = {e => setPassword(e.target.value)}
+                />
+            </div>
+            <div style={Style.Button}>
+                <button className="w-100 btn btn-lg btn-dark" type="submit">Login</button>
+            </div>
         </form>
+        </div>
     );
 };
 

@@ -1,3 +1,5 @@
+import reportWebVitals from "../reportWebVitals";
+
 //connect to websocket endpoint
 var socket = new WebSocket("ws://localhost:8000/ws");
 
@@ -34,7 +36,10 @@ let sendMsg = msg => {
   socket.send(msg);
 };
 
+// global variable to store ID (used for message positioning)
 const client = {};
 
-
 export { client, connect, sendMsg };
+
+//report web vitals testing
+reportWebVitals(console.log);

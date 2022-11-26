@@ -20,18 +20,46 @@ const Chat = () => {
 
    
     chatmenu = (
-        <ul className="navbar-nav me-auto mb-2 mb-md-0">
-            <li className="nav-item active">
-                <Link to="/room" className="navbar-brand"onClick ={enter}><button>Enter Room</button></Link>
-                <Link to="/login" className="navbar-brand"onClick ={logout}><button>Logout</button></Link>
-            </li>
-        </ul>
+            <div>           
+                <Link to="/room" onClick ={enter}><button className="w-100 btn btn-lg btn-dark">Enter Room</button></Link>
+                <ul></ul>
+                <Link to="/login" onClick ={logout}><button className="w-100 btn btn-lg btn-dark">Logout</button></Link>
+            </div> 
+       
     )
+
+    const Style = {
+        body:{
+            alignContent: "Center",
+            backgroundColor: 'Purple',
+            paddingTop: 300,
+            paddingBottom: 400,
+            paddingLeft: 100,
+            paddingRight: 100,
+
+        },
+
+        h2:{
+            alignContent: "Center",
+            paddingTop: 30,
+            paddingLeft: 750,
+            paddingRight: 90,
+            paddingBottom: 20,
+
+            text: "bold",
+
+        },
+        menu:{
+            alignContent: "space-between",
+            paddingLeft: 600,
+            paddingRight: 600,
+        },
+    }
     
     return(
-        <div>
-            <h2>{'Welcome to Chat APP.'} </h2>
-            <li>{chatmenu}</li>
+        <div style={Style.body}>
+            <h2 style={Style.h2}>{'Welcome to ChatApp'} </h2>
+            <div style={Style.menu}>{chatmenu}</div>
         </div>
         
     );
