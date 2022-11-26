@@ -2,12 +2,12 @@ import Header from '../components/Header/Header';
 import ChatHistory from '../components/ChatHistory/ChatHistory';
 import ChatInput from '../components/ChatInput/ChatInput';
 import React, { Component } from "react";
-import { connect, sendMsg } from "../api";
+import { client, connect, sendMsg } from "../api";
 
 class ChatApp extends Component {
   constructor(props) {
     super(props);
-    this.state ={
+    this.state = {
       chatHistory: []
     }
   }
@@ -25,7 +25,12 @@ class ChatApp extends Component {
 
   send(event) {
     if(event.keyCode === 13) {
-      sendMsg(event.target.value);
+      const obj = {
+        text: event.target.value,
+        id: client.Id
+      }
+      const msg = JSON.stringify(obj);
+      sendMsg(msg);
       event.target.value = "";
     }
   }

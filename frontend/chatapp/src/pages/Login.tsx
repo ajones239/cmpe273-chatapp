@@ -1,5 +1,6 @@
 import React,{SyntheticEvent, useState} from "react";
 import {Link, Navigate} from 'react-router-dom';
+import { client } from "../api";
 
 
 const Login = () =>{
@@ -26,6 +27,17 @@ const Login = () =>{
         //the order matters here redirect before set name
         setredir_url(true);
         console.log(content);
+
+        let iterator = fetch("http://localhost:8000/api/user", {
+            method: 'GET',
+            headers: {'Accept': 'application/json'},
+            credentials: 'include'
+        });
+        iterator.then(res => res.json())
+            .then(dat => {
+                console.log(dat);
+                client.Id = dat.Id;
+            });
     }
 
     if(redir_url){

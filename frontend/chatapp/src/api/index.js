@@ -34,4 +34,7 @@ let sendMsg = msg => {
   socket.send(msg);
 };
 
-export { connect, sendMsg };
+const client = {};
+
+
+export { client, connect, sendMsg };

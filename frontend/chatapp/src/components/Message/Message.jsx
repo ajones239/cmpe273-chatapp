@@ -17,7 +17,14 @@ class Message extends Component {
   }
 
   render() {
-    return <div className="Message">{this.state.message.body}</div>;
+    let msg = this.state.message;
+    let cname = "";
+    if (msg.id === "id") {
+      cname = "Message.me";
+    } else {
+      cname = "Message";
+    }
+    return <div className={cname}>{msg.text}</div>;
   }
 }
 
