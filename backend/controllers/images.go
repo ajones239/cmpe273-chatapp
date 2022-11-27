@@ -1,11 +1,12 @@
 package controllers
 
 import (
-    "encoding/base64"
+  "encoding/base64"
 	"context"
 	"fiber/dbconnect"
 	"fiber/models"
 	"log"
+  "fmt"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -49,4 +50,36 @@ func GetImage(c *fiber.Ctx) error {
         return err
     }
     return c.JSON(img)
+}
+
+func GetImageNames(c *fiber.Ctx) error {
+	cookie := c.Cookies("jwt")
+	_, err := jwt.ParseWithClaims(cookie, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(SecretKey), nil
+	})
+	if err != nil {
+		c.Status(fiber.StatusUnauthorized)
+		return c.JSON(fiber.Map{
+			"message": "user is unauthenticated",
+		})
+	}
+
+    imgs := make([]string, 0) 
+    ctx, _ := context.WithTimeout(context.Background(), 30*time.Second)
+    cursor, err := dbconnect.Collection.Find(ctx, bson.D{})
+    if err != nil {
+       return err
+    }
+    defer cursor.Close(context.Background())
+    for cursor.Next(context.Background()) {
+        var t map[string]interface{}
+        cursor.Decode(&t)
+        if _, ok := t["password"]; !ok { // ignore users, only interested in images
+          imgs = append(imgs, fmt.Sprint(t["_id"]))
+        }
+    }
+    if err := cursor.Err(); err != nil {
+      return err
+    }
+    return c.JSON(imgs)
 }
