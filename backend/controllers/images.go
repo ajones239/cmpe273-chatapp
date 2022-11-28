@@ -1,17 +1,17 @@
 package controllers
 
 import (
-  "encoding/base64"
-	"context"
-	"fiber/dbconnect"
-	"fiber/models"
-	"log"
-  "fmt"
-	"time"
+    "encoding/base64"
+    "context"
+    "fiber/dbconnect"
+    "fiber/models"
+    "log"
+    "fmt"
+    "time"
 
-	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt"
-	"go.mongodb.org/mongo-driver/bson"
+    "github.com/gofiber/fiber/v2"
+    "github.com/golang-jwt/jwt"
+    "go.mongodb.org/mongo-driver/bson"
 )
 
 func AddImage(c *fiber.Ctx) error {
