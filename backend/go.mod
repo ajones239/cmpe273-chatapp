@@ -4,14 +4,13 @@ go 1.19
 
 require (
 	github.com/gofiber/fiber/v2 v2.39.0
-	github.com/golang-jwt/jwt/v4 v4.4.2
+	github.com/mitchellh/mapstructure v1.5.0
 	go.mongodb.org/mongo-driver v1.10.3
 	golang.org/x/crypto v0.0.0-20221012134737-56aed061732a
 )
 
 require (
 	github.com/fasthttp/websocket v1.5.0 // indirect
-	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect

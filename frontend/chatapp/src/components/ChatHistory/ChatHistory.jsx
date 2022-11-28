@@ -4,9 +4,8 @@ from our ChatApp.js function through its' props
 and will subsequently render them 
 one under the other.
 */
-import styles from '../Message/Message.scss';
+import Message from "../Message";
 import { client } from "../../api";
-
 import React, { Component } from "react";
 import "./ChatHistory.scss";
 
@@ -15,7 +14,7 @@ class ChatHistory extends Component {
       const getClassName = function(msg) {
         let obj = JSON.parse(msg.data);
         console.log(obj.id);
-        if (obj.id == client.Id) {
+        if (obj.id === client.Id) {
           return "MessageSelf";
         } else {
           return "Message";
@@ -23,7 +22,7 @@ class ChatHistory extends Component {
       }
 
       const messages = this.props.chatHistory.map((msg, index) => (
-          <p className={getClassName(msg)} key={index}>{JSON.parse(msg.data).text}</p>
+          <Message cname={getClassName(msg)} data={JSON.parse(msg.data).text} img={JSON.parse(msg.data).img} key={index} />
       ));
 
       return (

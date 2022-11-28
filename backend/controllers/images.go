@@ -6,9 +6,9 @@ import (
     "fiber/dbconnect"
     "fiber/models"
     "log"
-    "fmt"
     "time"
 
+    "github.com/mitchellh/mapstructure"
     "github.com/gofiber/fiber/v2"
     "github.com/golang-jwt/jwt"
     "go.mongodb.org/mongo-driver/bson"
@@ -49,22 +49,23 @@ func GetImage(c *fiber.Ctx) error {
     if err != nil {
         return err
     }
+    log.Println("Fetching img " + imgName)
     return c.JSON(img)
 }
 
-func GetImageNames(c *fiber.Ctx) error {
+func GetImages(c *fiber.Ctx) error {
 	cookie := c.Cookies("jwt")
 	_, err := jwt.ParseWithClaims(cookie, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(SecretKey), nil
 	})
-	if err != nil {
-		c.Status(fiber.StatusUnauthorized)
-		return c.JSON(fiber.Map{
-			"message": "user is unauthenticated",
-		})
-	}
+	// if err != nil {
+	// 	c.Status(fiber.StatusUnauthorized)
+	// 	return c.JSON(fiber.Map{
+	// 		"message": "user is unauthenticated",
+	// 	})
+	// }
 
-    imgs := make([]string, 0) 
+    imgs := make([]models.Image, 0) 
     ctx, _ := context.WithTimeout(context.Background(), 30*time.Second)
     cursor, err := dbconnect.Collection.Find(ctx, bson.D{})
     if err != nil {
@@ -75,7 +76,12 @@ func GetImageNames(c *fiber.Ctx) error {
         var t map[string]interface{}
         cursor.Decode(&t)
         if _, ok := t["password"]; !ok { // ignore users, only interested in images
-          imgs = append(imgs, fmt.Sprint(t["_id"]))
+          var img models.Image
+          err = mapstructure.Decode(t, &img)
+          if err != nil {
+            continue
+          }
+          imgs = append(imgs, img)
         }
     }
     if err := cursor.Err(); err != nil {

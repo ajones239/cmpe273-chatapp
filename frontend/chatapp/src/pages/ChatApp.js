@@ -24,10 +24,12 @@ class ChatApp extends Component {
   }
 
   send(event) {
-    if(event.keyCode === 13) {
+    console.log(event.type);
+    if (event.keyCode === 13 || event.type === 'click') {
       const obj = {
         text: event.target.value,
-        id: client.Id
+        id: client.Id,
+        img: event.type === 'click'
       }
       const msg = JSON.stringify(obj);
       sendMsg(msg);
