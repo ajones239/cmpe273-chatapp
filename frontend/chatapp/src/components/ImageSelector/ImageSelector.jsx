@@ -37,7 +37,7 @@ class ImageSelector extends Component {
       return (
         
         <div className="ImageSelector">
-          <AliceCarousel mouseTracking keyboardNavigation infinite>
+          <AliceCarousel mouseTracking keyboardNavigation infinite disableDotsControls>
             {images}
           </AliceCarousel>
         </div>
